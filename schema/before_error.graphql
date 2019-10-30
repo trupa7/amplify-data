@@ -1,0 +1,956 @@
+
+
+type Mobile @model {
+    ID: ID!
+    ref: String!
+    dBag: String!
+    whatelse: [String]
+    what: String!
+    zara: [String]
+    mean: mean!
+    oil: oil
+    typeComment: String
+    aTT: aTT!
+    shacks: [String]
+    ThoseGuys: [ThoseGuys]
+    ownage: Boolean!
+    Northpole: [String]
+    moon: moon
+    defcon: defcon
+    venmo: String
+    botsowan: botsowan
+    ameba:ameba!
+    depos: [String]
+    solidiers: [String]
+    general: [ID]
+    captains: [ID]
+    battles: [ID]
+    insurgents: [ID]
+    adversaries: [ID]
+    tanks: [ID]
+    whatsapp: whatsapp
+    IFF: Boolean
+    IFF2: Boolean
+    dollars: Boolean
+    yen: Boolean
+    createdDate: AWSDateTime
+    rTeam: Boolean
+    group: GTable @connection(name: "GTablemobiles")
+    maintainers: [mobileMaintainers] @connection(name: "mobileMaintainers")
+    getthem: [Getthem] @connection(name: "mobilegetthem")
+    dtable: [Mobiledtable] @connection(name: "mobiledtables")
+    standardknown: [mobilestandardknown] @connection(name: "mobilestandardknown")
+    training: [mobiletraining] @connection(name: "mobiletraining")
+    nfrlibs: [mobileNfrlibs] @connection(name: "mobileNfrlibs")
+    incIDent: IncIDent @connection(name: "IncIDentmobiles")
+#     packages: [mobilePackages] @connection(name: "mobilePackages")
+}
+
+# m:n relationship between  mobile and dtable
+type Mobiledtable @model(queries: null) {
+    ID: ID!
+    mobile: Mobile @connection(name: "mobiledtables")
+    dtable: DTable @connection(name: "dtablemobiles")
+}
+
+
+# dtable table
+type DTable @model {
+    ID: ID!
+    ref: String!
+    rainType: rainType!
+    resourceID: String!
+    dateCreated: AWSDate!
+    dateUpdated: AWSDate!
+    dateLastSeen: AWSDate!
+    asstat: asstat!
+    tags: [String]
+    technology: [String]
+    getthem: [Getthemdtable] @connection(name: "dtablegetthem")
+    mobiles: [Mobiledtable] @connection(name: "dtablemobiles")
+    groups: [GTabledtable] @connection(name: "dtableGTables")
+    incIDents: [IncIDentdtable] @connection(name: "dtableIncIDents")
+    # packages: [Packagedtable] @connection(name: "dtablePackages")
+}
+
+# group table
+type GTable @model {
+    ID: ID!
+    ref: String!
+    dBag: String!
+    organization: Organization @connection(name: "OrganizationGTables")
+    mobiles: [Mobile] @connection(name: "GTablemobiles")
+    dtable: [GTabledtable] @connection(name: "GTabledtable")
+    standardknown: [GTablestandardknown] @connection(name: "GTablestandardknown")
+    childGroups: [ParentGroupChildGroups] @connection(name: "ParentGroupChildGroups")
+    parentGroup: GTable @connection
+}
+
+# m:n relationship between  Parent group and childgroup
+type ParentGroupChildGroups @model(queries: null) {
+    ID: ID!
+    parentGroupID: GTable @connection(name: "ParentGroupChildGroups")
+}
+
+
+# m:n relationship between  GTable and dtable
+type GTabledtable @model(queries: null) {
+    ID: ID!
+    gtable: GTable @connection(name: "GTabledtable")
+    dtable: DTable @connection(name: "dtableGTables")
+}
+
+# m:n relationship between  GTable and standardknown
+type GTablestandardknown @model(queries: null) {
+    ID: ID!
+    gtable: GTable @connection(name: "GTablestandardknown")
+    standardknown: standardknown @connection(name: "standardknownGTables")
+}
+
+# Organization table
+type Organization @model {
+    ID: ID!
+    ref: String!
+    dBag: String!
+    groups: [GTable] @connection(name: "OrganizationGTables")
+}
+
+# maintainer table
+type Maintainer @model {
+    ID: ID!
+    ref: String!
+    fn: String!
+    mIDdleName: String
+    ln: String!
+    un: String!
+    ue: String
+    gi: String!
+    team: Team @connection(name: "TeamMaintainers")
+    incIDent: IncIDent @connection(name: "IncIDentMaintainers")
+    accesses: [Access] @connection(name: "MaintainerAccesses")
+    mobiles: [mobileMaintainers] @connection(name: "Maintainermobiles")
+    training: [Training] @connection(name: "Maintainertraining")
+    modelactors: [modelactorMaintainers] @connection(name: "Maintainermodelactors")
+}
+
+# # m:n relationship between  mobile and maintainer table
+type mobileMaintainers @model(queries: null) {
+    ID: ID!
+    mobile: Mobile @connection(name: "mobileMaintainers")
+    maintainer: Maintainer @connection(name: "Maintainermobiles")
+}
+
+#Getthem
+type Getthem @model {
+    ID: ID!
+    ref: String!
+    dBag: String!
+    summary: String!
+    mean: mean!
+    autoTriaged: Boolean!
+    triaged: Boolean!
+    what: String!
+    recommendation: String
+    publicID: String
+    status: Status!
+    GetthemStatusMethod: GetthemStatusMethod
+    wID: Int
+    parentWID: Int
+    mitigation: String
+    impact: String
+    likelihood: String
+    reference: String
+    endpoint: String!
+    resolutionAdviceReasons: [String]
+    sources: [String]
+    resolutionAdvice: ResolutionAdvice!
+    GetthemType: GetthemType!
+    typeComment: String
+    firstReported: AWSDateTime!
+    lastReported: AWSDateTime!
+    lastUpdated: AWSDateTime!
+    comments: [String]
+    cvss: String!
+    rawDatum: String
+    mergeReasons: [String]
+    tags: [String]
+    defects: [String]
+    duplicateWIDs: [String]
+    mergedWIDs: [String]
+    psirtCase: ID
+    attachmentIDs: [String]
+    # package: Package @connection(name: "Packagegetthem")
+    # incIDent: IncIDent @connection(name: "IncIDentgetthem")
+    mobile: Mobile @connection(name: "mobilegetthem")
+    # model: model @connection(name: "modelgetthem")
+    # RemSLAs: [RemSLAgetthem] @connection(name: "GetthemRemSLAs")
+    dtable: [Getthemdtable] @connection(name: "Getthemdtable")
+    standardknown: [Getthemstandardknown] @connection(name: "Getthemstandardknown")
+}
+
+# m:n relationship between  Getthem and dtable
+type Getthemdtable @model(queries: null) {
+    ID: ID!
+    Getthem: Getthem @connection(name: "Getthemdtable")
+    dtable: DTable @connection(name: "dtablegetthem")
+}
+
+# # m:n relationship between  Getthem and standardknown
+type Getthemstandardknown @model(queries: null) {
+    ID: ID!
+    Getthem: Getthem @connection(name: "Getthemstandardknown")
+    standardknown: standardknown @connection(name: "standardknowngetthem")
+}
+
+# Training table
+type Training @model {
+    ID: ID!
+    ref: String!
+    dBag: String!
+    dateStarted: AWSDate!
+    dateCompleted: AWSDate!
+    trainingtatus: trainingtatus!
+    dateNextDue: AWSDate!
+    maintainer: Maintainer @connection(name: "Maintainertraining")
+    mobiles: [mobiletraining] @connection(name: "Trainingmobiles")
+    morses: [TrainingMorses] @connection(name: "TrainingMorses")
+}
+
+# m:n relationship between  mobile and Training table
+type mobiletraining @model(queries: null) {
+    ID: ID!
+    mobile: Mobile @connection(name: "mobiletraining")
+    Training: Training @connection(name: "Trainingmobiles")
+}
+
+# Nfrlib table
+type Nfrlib @model {
+    ID: ID!
+    ref: String!
+    dBag: String!
+    type: NfrLibType!
+    scope: NfrLibScope!
+    dateCreated: AWSDate!
+    status: NfrLibStatus!
+    documentUrl: String!
+    mobiles: [mobileNfrlibs] @connection(name: "Nfrlibmobiles")
+    reqts: [Reqt] @connection(name: "NfrlibReqts")
+}
+
+# m:n relationship between  mobile and Nfrlib table
+type mobileNfrlibs @model(queries: null) {
+    ID: ID!
+    mobile: Mobile @connection(name: "mobileNfrlibs")
+    nfrlib: Nfrlib @connection(name: "Nfrlibmobiles")
+}
+
+#standardknown table
+
+type standardknown @model {
+    ID: ID!
+    ref: String!
+    ipAddress: String!
+    hostname: String!
+    dn: String!
+    dateCreated: AWSDate!
+    dateUpdated: AWSDate!
+    dateLastSeen: AWSDate!
+    asstat: asstat!
+    tags: [String]
+    metadata: [String]
+    sourceData: String!
+    technology: [String]
+    mobiles: [mobilestandardknown] @connection(name: "standardknownmobiles")
+    getthem: [Getthemstandardknown]     @connection(name: "standardknowngetthem")
+    groups: [GTablestandardknown]     @connection(name: "standardknownGTables")
+    incIDent: [IncIDentstandardknown]    @connection(name: "standardknownIncIDents")
+    # packages: [Packagestandardknown]    @connection(name: "standardknownPackages")
+}
+
+# # m:n relationship between  mobile and standardknown
+type mobilestandardknown @model(queries: null) {
+    ID: ID!
+    mobile: Mobile    @connection(name: "mobilestandardknown")
+    standardknown: standardknown    @connection(name: "standardknownmobiles")
+}
+
+#store table
+type storeTable @model {
+    ID: ID!
+    ref: String!
+    dBag: String!
+    whatelse: [String]
+    what: String!
+    url: String!
+    language: [String]
+    mobile: Mobile @connection
+    # packages: [storeTablePackages] @connection(name: "storeTablePackages")
+}
+
+#Access table
+type Access @model {
+    ID: ID!
+    ref: String!
+    dBag: String!
+    what: String!
+    entityID: ID!
+    entityType: String!
+    maintainer: Maintainer @connection(name: "MaintainerAccesses")
+    role: RTable @connection(name: "AccessRpleTables")
+}
+
+#RTable
+type RTable @model {
+    ID: ID!
+    ref: String!
+    dBag: String!
+    what: String!
+    accesses: [Access] @connection(name: "AccessRpleTables")
+    permissions: [PTableRTables] @connection(name: "RTablePTables")
+}
+
+#Permission table
+type PTable @model {
+    ID: ID!
+    ref: String!
+    dBag: String!
+    what: String!
+    roles: [PTableRTables] @connection(name: "PTableRTables")
+}
+
+# # m:n relationship between  PTable and RTable
+type PTableRTables @model(queries: null) {
+    ID: ID!
+    ptable: PTable @connection(name: "PTableRTables")
+    rtable: RTable @connection(name: "RTablePTables")
+}
+
+# modelactor table
+type modelactor @model {
+    ID: ID!
+    ref: String!
+    modelActorRole: modelActorRole!
+    model: model @connection(name: "modelmodelactors")
+    maintainers: [modelactorMaintainers] @connection(name: "modelactorMaintainers")
+}
+
+# # m:n relationship between  PTable and RTable
+type modelactorMaintainers @model(queries: null) {
+    ID: ID!
+    modelactor: modelactor @connection(name: "modelactorMaintainers")
+    maintainer: Maintainer @connection(name: "Maintainermodelactors")
+}
+
+#model table
+type model @model {
+    ID: ID!
+    ref: String!
+    designStatus: DesignStatus!
+    what: String
+    lastUpdated: String!
+    modelUrl: String!
+    isSystemGenerated: Boolean!
+    mobile: Mobile @connection
+    # getthem: [Getthem] @connection(name: "modelgetthem")
+    architectures: [Architecture] @connection(name: "modelArchitectures")
+    modelactors: [modelactor] @connection(name: "modelmodelactors")
+}
+
+#Architecture table
+
+type Architecture @model {
+    ID: ID!
+    ref: String!
+    designStatus: DesignStatus!
+    what: String
+    lastUpdated: AWSDate!
+    architectureUrl: String!
+    isSystemGenerated: Boolean!
+    mobile: Mobile @connection
+    model: model @connection(name: "modelArchitectures")
+    modelactor: modelactor @connection
+}
+
+# table RemSLA
+type RemSLA @model {
+    ID: ID!
+    ref: String!
+    dueDate: AWSDate!
+    isCustomizied: Boolean!
+    # getthem: [RemSLAgetthem] @connection(name: "RemSLAgetthem")
+    Remmeanvalues: [RemSLARemmeanvalues] @connection(name: "RemSLARemmeanvalues")
+}
+
+# # # m:n relationship between  RemSLA and Getthem
+# type RemSLAgetthem @model(queries: null) {
+#   ID: ID!
+#   RemSLA: RemSLA @connection(name: "RemSLAgetthem")
+#   Getthem: Getthem @connection(name: "GetthemRemSLAs")
+# }
+
+#table Remmeanvalue
+type Remmeanvalue @model {
+    ID: ID!
+    ref: String!
+    GetthemAssetType: GetthemAssetType!
+    STL: STL!
+    cri: String!
+    h: String!
+    m: String!
+    l: String!
+    what: String
+    setUpDate: AWSDateTime!
+    RemSLAs: [RemSLARemmeanvalues] @connection(name: "RemmeanvalueRemSLAs")
+}
+
+# # m:n relationship between  RemSLA and Remmeanvalue
+type RemSLARemmeanvalues @model(queries: null) {
+    ID: ID!
+    RemSLA: RemSLA @connection(name: "RemSLARemmeanvalues")
+    Remmeanvalue: Remmeanvalue @connection(name: "RemmeanvalueRemSLAs")
+}
+
+#Morse table
+type Morse @model {
+    ID: ID!
+    ref: String!
+    dBag: String!
+    morseType: MorseType!
+    what: String!
+    morseLocation: String!
+    training: [TrainingMorses] @connection(name: "Morsetraining")
+}
+
+# # m:n relationship between  Training and Morse
+type TrainingMorses @model(queries: null) {
+    ID: ID!
+    Training: Training @connection(name: "TrainingMorses")
+    morse: Morse @connection(name: "Morsetraining")
+}
+
+# Reqt table
+type Reqt @model {
+    ID: ID!
+    ref: String!
+    dBag: String!
+    title: String!
+    what: String!
+    priority: NfrReqPriority!
+    moon: NfrReqmoon!
+    status: NfrReqStatus!
+    jiraIssueKey: String!
+    dateCompleted: AWSDate!
+    nfrlib: Nfrlib @connection(name: "NfrlibReqts")
+}
+
+#IncIDent
+type IncIDent @model {
+    ID: ID!
+    ref: String!
+    incIDentCodeName: String!
+    incIDentID: ID
+    incIDentType: IncIDentType!
+    incIDentHandler: String!
+    assetName: String!
+    assetcriity: Assetcriity!
+    Getthemcriity: Getthemcriity!
+    GetthemType: GetthemType!
+    initialPriority: InitialPriority!
+    finalPriority: FinalPriority
+    dateFinalPriority: AWSDateTime
+    subject: String!
+    summary: String!
+    Rem: String
+    timelineCompromiseUnit: AWSDateTime
+    timelineDiscoveryUnit: AWSDateTime
+    timelineRemUnit: AWSDateTime
+    status: SirtStatus!
+    actor: ActorType!
+    action: ActionType!
+    actionHackingVariety: ActionHackingVariety
+    actionMisuseVariety: ActionMisuseVariety
+    actionSocialVariety: ActionSocialVariety
+    discoveryMethodExternalVariety: DiscoveryMethodExternalVariety
+    discoveryMethodInternalVariety: DiscoveryMethodInternalVariety
+    discoveryMethodPartnerVariety: DiscoveryMethodPartnerVariety
+    targeted: Targeted
+    assetAssetsVariety: String
+    assetType: AssetType!
+    assetManagement: AssetManagement
+    assetOwnership: AssetOwnership
+    jiraPunchOut: String!
+    disclosureLists: [String]
+    informIc: Boolean!
+    informIm: Boolean!
+    informIr: Boolean!
+    informTr: Boolean!
+    informleader: Boolean!
+    battlerythmset: Boolean!
+    battlerythmduration: String!
+    maintainers: [Maintainer] @connection(name: "IncIDentMaintainers")
+    # getthem: [Getthem] @connection(name: "IncIDentgetthem")
+    dtable: [IncIDentdtable] @connection(name: "IncIDentdtable")
+    standardknown: [IncIDentstandardknown] @connection(name: "IncIDentstandardknown")
+    mobiles: [Mobile] @connection(name: "IncIDentmobiles")
+}
+
+# # m:n relationship between  IncIDent and dtable
+type IncIDentdtable @model(queries: null) {
+    ID: ID!
+    incIDent: IncIDent @connection(name: "IncIDentdtable")
+    dtable: DTable @connection(name: "dtableIncIDents")
+}
+
+# # m:n relationship between  IncIDent and standardknown
+type IncIDentstandardknown @model(queries: null) {
+    ID: ID!
+    incIDent: IncIDent @connection(name: "IncIDentstandardknown")
+    standardknown: standardknown @connection(name: "standardknownIncIDents")
+}
+
+#team table
+type Team @model {
+    ID: ID!
+    ref: String!
+    member: String!
+    role: String!
+    teamType: TeamType!
+    maintainers: [Maintainer] @connection(name: "TeamMaintainers")
+}
+
+#Integration table
+type Integration @model {
+    ID: ID!
+    ref: String!
+    dBag: String!
+    serverUrl: String
+    maintainerName: String
+    logoPath: String
+    apiKey: String
+}
+
+# # Package table
+# type Package @model {
+#     ID: ID!
+#     ref: String!
+#     dBag: String!
+#     packageType: PackageType!
+#     mean: mean!
+#     cveCount: Int!
+#     lastUpdated: AWSDate!
+#     mobiles: [mobilePackages] @connection(name: "Packagemobiles")
+#     dtable: [Packagedtable] @connection(name: "Packagedtable")
+#     standardknown: [Packagestandardknown] @connection(name: "Packagestandardknown")
+#     # depos: [storeTablePackages] @connection(name: "PackagestoreTables")
+#     # getthem: [Getthem] @connection(name: "Packagegetthem")
+# }
+
+# # # m:n relationship between  Package and mobile
+# type mobilePackages @model(queries: null) {
+#     ID: ID!
+#     package: Package @connection(name: "Packagemobiles")
+#     mobile: Mobile @connection(name: "mobilePackages")
+# }
+
+# # # # m:n relationship between  Package and dtable
+# type Packagedtable @model(queries: null) {
+#     ID: ID!
+#     package: Package @connection(name: "Packagedtable")
+#     dtable: DTable @connection(name: "dtablePackages")
+# }
+
+# # # # m:n relationship between  Package and standardknown
+# type Packagestandardknown @model(queries: null) {
+#     ID: ID!
+#     package: Package @connection(name: "Packagestandardknown")
+#     standardknown: standardknown @connection(name: "standardknownPackages")
+# }
+
+# # # m:n relationship between  Package and storeTable
+# type storeTablePackages @model(queries: null) {
+#   ID: ID!
+#   package: Package @connection(name: "PackagestoreTables")
+#   storetable: storeTable @connection(name: "storeTablePackages")
+# }
+
+#enum for Package table
+enum PackageType {
+    Other
+}
+
+#enum for IncIDent table
+enum IncIDentType {
+    P
+    S
+}
+
+#enum for teamtable
+enum TeamType {
+    TechnicalResponse
+}
+
+enum InitialPriority {
+   Cr
+    Hi
+    Me
+    L
+}
+
+enum Assetcriity {
+    Cr
+    Hi
+    Me
+    L
+}
+
+enum Getthemcriity {
+   Cr
+    Hi
+    Me
+    L
+}
+
+enum FinalPriority {
+    Cr
+    Hi
+    Me
+    L
+}
+
+enum SirtStatus {
+    New
+    ClosedR
+}
+
+enum ActionHackingVariety {
+    Other
+    Unknown
+}
+
+enum ActionMisuseVariety {
+    Dat
+    Em
+    Il
+    Kno
+    Net
+    Pos
+    Pri
+    Unap
+    Unapund
+    O
+    Unk
+}
+
+enum ActionSocialVariety {
+    Ba
+    Br
+    El
+    Ext
+    For
+    Inf
+    Phi
+    Pre
+    Pro
+    Sc
+    S
+    Ot
+    Unknown
+}
+
+enum ActorType {
+    In
+    Ex
+    Par
+    Un
+    Res
+    Na
+}
+
+enum DiscoveryMethodExternalVariety {
+    Ac
+    Au
+    Cus
+    Eme
+    Fo
+    Fra
+    In
+    La
+    Mon
+    Other
+    Se
+    Su
+    Unknown
+    Unrela
+}
+
+enum DiscoveryMethodInternalVariety {
+    An
+    Bre
+    Dat
+    Fin
+    Fra
+    HID
+    Incab
+    Infras
+    ItRe
+    Lo
+    NID
+    Oth
+    Re
+    SS
+    Unknown
+}
+
+enum DiscoveryMethodPartnerVariety {
+    An
+    Au
+    In
+    MS
+    Ot
+    Unknown
+}
+
+enum Targeted {
+    Op
+    Tar
+    Na
+    Unknown
+}
+
+enum AssetType {
+    Cl
+    Saa
+    mobile
+    Ot
+    Unknown
+}
+
+enum AssetManagement {
+    Ex
+    In
+    Co
+    Na
+    Unk
+    Ot
+}
+
+enum AssetOwnership {
+    Cus
+    In
+    Em
+    Na
+    Pa
+    Unkn
+    Vi
+    Oth
+}
+
+enum ActionType {
+    Error
+    H
+    Ma
+    So
+    Mi
+    Disclosure
+}
+
+#enum for Reqt table
+enum NfrReqPriority {
+    Cri
+    Hi
+    Me
+    L
+}
+
+enum NfrReqmoon {
+    Req
+    De
+    Impl
+    Te
+    Rel
+    Pr
+}
+
+enum NfrReqStatus {
+    NS
+    IP
+    Com
+}
+
+#enum for Morse table
+enum MorseType {
+    BaS
+    BSTD
+    LST
+}
+
+#enum for Remmeanvalue table
+
+enum GetthemAssetType {
+    mobile
+    Infr
+}
+
+enum STL {
+    oil
+    Cus
+}
+
+#model table enum
+enum DesignStatus {
+    NS
+    IP
+    IR
+    IA
+    Cur
+    OD
+}
+
+#modelactor table enum
+enum modelActorRole {
+    Aut
+    Rev
+    App
+}
+
+#enum for Nfrlib table
+enum NfrLibType {
+    oi
+    Cust
+    TP
+}
+
+enum NfrLibScope {
+    Sec
+    Comp
+    C
+    Ot
+}
+
+enum NfrLibStatus {
+    A
+    NA
+}
+
+#enum Training table
+enum trainingtatus {
+    NS
+    IP
+    Com
+}
+
+#enum for Getthem
+
+enum Status {
+    Op
+    UR
+    Res
+    Mer
+    Ver
+    Accepted
+}
+
+enum GetthemStatusMethod {
+    Fix
+    FP
+    NoT
+    Mgate
+    Date
+}
+
+enum ResolutionAdvice {
+    Fix
+    FP
+    NoT
+    Mgate
+    Date
+}
+
+enum GetthemType {
+    SS
+    DS
+    IS
+    MA
+    TM
+    CR
+    CA
+    DR
+    BB
+    Ot
+}
+
+# enum for mobile table
+enum mean {
+    Cri
+    Hi
+    M
+    Lite
+}
+
+enum oil {
+    eb
+    Detop
+    bile
+}
+
+enum aTT {
+    Pduc
+    Bess
+    Oth
+}
+
+enum ThoseGuys {
+    P
+    Sc
+    So
+    Gp
+    Io
+    Na
+}
+
+enum moon {
+    Inv
+    Sus
+    Ret
+}
+
+enum defcon {
+    Cr
+    Hi
+    M
+    Lite
+    Unknown
+}
+
+enum botsowan {
+    In
+    out
+}
+
+enum ameba {
+    Disco
+    MM
+}
+
+enum whatsapp {
+    SM
+    MM
+    Monoli
+    Hyb
+    Mono
+    Micro
+}
+
+#enum for cloud type
+enum rainType {
+    A
+    G
+    Az
+    Ot
+}
+
+enum asstat {
+    Active
+    Stale
+    Archived
+}
