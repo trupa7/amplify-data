@@ -1,0 +1,373 @@
+type Mobile @model {
+  id: ID!
+  ref: String!
+  all: AllTable @connection(name: "AllTableMobiles")
+  plants: [MobilePlants] @connection(name: "MobilePlants")
+  errs: [Err] @connection(name: "MobileErrs")
+  secretdatas: [MobileSecretDatas] @connection(name: "MobileSecretDatas")
+  nonsecretdatas: [MobileNonSecretDatas]
+    @connection(name: "MobileNonSecretDatas")
+  earns: [MobileEarns] @connection(name: "MobileEarns")
+  mylibs: [MobileMylibs] @connection(name: "MobileMylibs")
+  insect: Insect @connection(name: "InsectMobiles")
+  pagers: [MobilePagers] @connection(name: "MobilePagers")
+}
+
+# # m:n relationship between  Mobile and SecretData
+type MobileSecretDatas @model(queries: null) {
+  id: ID!
+  mobile: Mobile @connection(name: "MobileSecretDatas")
+  secretdata: SecretData @connection(name: "SecretDataMobiles")
+}
+
+# SecretData table
+type SecretData @model {
+  id: ID!
+  ref: String!
+  errs: [ErrSecretDatas]
+    @connection(name: "SecretDataErrs")
+  mobiles: [MobileSecretDatas] @connection(name: "SecretDataMobiles")
+  alls: [AllTableSecretDatas] @connection(name: "SecretDataAllTables")
+  insects: [InsectSecretDatas] @connection(name: "SecretDataInsects")
+  pagers: [SecretDataPagers] @connection(name: "SecretDataPagers")
+}
+
+# All table
+type AllTable @model {
+  id: ID!
+  ref: String!
+  company: Company @connection(name: "CompanyAllTables")
+  mobiles: [Mobile] @connection(name: "AllTableMobiles")
+  secretdatas: [AllTableSecretDatas] @connection(name: "AllTableSecretDatas")
+  nonsecretdatas: [AllTableNonSecretDatas]
+    @connection(name: "AllTableNonSecretDatas")
+  childAlls: [ParentAllChildAlls] @connection(name: "ParentAllChildAlls")
+  parentAll: AllTable @connection
+}
+
+# m:n relationship between  Parent all and childall
+type ParentAllChildAlls @model(queries: null) {
+  id: ID!
+  parentAllId: AllTable @connection(name: "ParentAllChildAlls")
+}
+
+# m:n relationship between  AllTable and SecretData
+type AllTableSecretDatas @model(queries: null) {
+  id: ID!
+  alltable: AllTable @connection(name: "AllTableSecretDatas")
+  secretdata: SecretData @connection(name: "SecretDataAllTables")
+}
+
+# m:n relationship between  AllTable and NonSecretData
+type AllTableNonSecretDatas @model(queries: null) {
+  id: ID!
+  alltable: AllTable @connection(name: "AllTableNonSecretDatas")
+  nonsecretdata: NonSecretData @connection(name: "NonSecretDataAllTables")
+}
+
+# Company table
+type Company @model {
+  id: ID!
+  ref: String!
+  alls: [AllTable] @connection(name: "CompanyAllTables")
+}
+
+# plant table
+type Plant @model {
+  id: ID!
+  ref: String!
+  tyre: Tyre @connection(name: "TyrePlants")
+  insect: Insect @connection(name: "InsectPlants")
+  attackes: [Attack] @connection(name: "PlantAttackes")
+  mobiles: [MobilePlants] @connection(name: "PlantMobiles")
+  earns: [Earn] @connection(name: "PlantEarns")
+  detectors: [DetectorPlants] @connection(name: "PlantDetectors")
+}
+
+# # m:n relationship between  Mobile and plant table
+type MobilePlants @model(queries: null) {
+  id: ID!
+  mobile: Mobile @connection(name: "MobilePlants")
+  plant: Plant @connection(name: "PlantMobiles")
+}
+
+#Err
+type Err @model {
+  id: ID!
+  ref: String!
+  pager: Pager @connection(name: "PagerErrs")
+  insect: Insect @connection(name: "InsectErrs")
+  mobile: Mobile @connection(name: "MobileErrs")
+  temperature: Temperature @connection(name: "TemperatureErrs")
+  retros: [RetroErrs] @connection(name: "ErrRetros")
+  secretdatas: [ErrSecretDatas] @connection(name: "ErrSecretDatas")
+  nonsecretdatas: [ErrNonSecretDatas] @connection(name: "ErrNonSecretDatas")
+}
+
+# m:n relationship between  Err and SecretData
+type ErrSecretDatas @model(queries: null) {
+  id: ID!
+  err: Err @connection(name: "ErrSecretDatas")
+  secretdata: SecretData @connection(name: "SecretDataErrs")
+}
+
+# # m:n relationship between  Err and NonSecretData
+type ErrNonSecretDatas @model(queries: null) {
+  id: ID!
+  err: Err @connection(name: "ErrNonSecretDatas")
+  nonsecretdata: NonSecretData @connection(name: "NonSecretDataErrs")
+}
+
+# Earn table
+type Earn @model {
+  id: ID!
+  ref: String!
+  plant: Plant @connection(name: "PlantEarns")
+  mobiles: [MobileEarns] @connection(name: "EarnMobiles")
+  parts: [EarnParts] @connection(name: "EarnParts")
+}
+
+# m:n relationship between  Mobile and Earn table
+type MobileEarns @model(queries: null) {
+  id: ID!
+  mobile: Mobile @connection(name: "MobileEarns")
+  earn: Earn @connection(name: "EarnMobiles")
+}
+
+# Mylib table
+type Mylib @model {
+  id: ID!
+  ref: String!
+  mobiles: [MobileMylibs] @connection(name: "MylibMobiles")
+  retires: [Retire] @connection(name: "MylibRetires")
+}
+
+# m:n relationship between  Mobile and Mylib table
+type MobileMylibs @model(queries: null) {
+  id: ID!
+  mobile: Mobile @connection(name: "MobileMylibs")
+  mylib: Mylib @connection(name: "MylibMobiles")
+}
+
+#NonSecretData table
+
+type NonSecretData @model {
+  id: ID!
+  ref: String!
+  mobiles: [MobileNonSecretDatas] @connection(name: "NonSecretDataMobiles")
+  errs: [ErrNonSecretDatas]
+    @connection(name: "NonSecretDataErrs")
+  alls: [AllTableNonSecretDatas] @connection(name: "NonSecretDataAllTables")
+  insect: [InsectNonSecretDatas] @connection(name: "NonSecretDataInsects")
+  pagers: [NonSecretDataPagers] @connection(name: "NonSecretDataPagers")
+}
+
+# # m:n relationship between  Mobile and NonSecretData
+type MobileNonSecretDatas @model(queries: null) {
+  id: ID!
+  mobile: Mobile @connection(name: "MobileNonSecretDatas")
+  nonsecretdata: NonSecretData @connection(name: "NonSecretDataMobiles")
+}
+
+#Place table
+type PlaceTable @model {
+  id: ID!
+  ref: String!
+  mobile: Mobile @connection
+  pagers: [PlaceTablePagers] @connection(name: "PlaceTablePagers")
+}
+
+#Attack table
+type Attack @model {
+  id: ID!
+  ref: String!
+  plant: Plant @connection(name: "PlantAttackes")
+  dell: DellTable @connection(name: "AttackRpleTables")
+}
+
+#DellTable
+type DellTable @model {
+  id: ID!
+  ref: String!
+  attackes: [Attack] @connection(name: "AttackRpleTables")
+  auths: [AuthTableDellTables] @connection(name: "DellTableAuthTables")
+}
+
+#Auth table
+type AuthTable @model {
+  id: ID!
+  ref: String!
+  dells: [AuthTableDellTables] @connection(name: "AuthTableDellTables")
+}
+
+# # m:n relationship between  AuthTable and DellTable
+type AuthTableDellTables @model(queries: null) {
+  id: ID!
+  authtable: AuthTable @connection(name: "AuthTableDellTables")
+  delltable: DellTable @connection(name: "DellTableAuthTables")
+}
+
+# Detector table
+type Detector @model {
+  id: ID!
+  ref: String!
+  temperature: Temperature @connection(name: "TemperatureDetectors")
+  plants: [DetectorPlants] @connection(name: "DetectorPlants")
+}
+
+# # m:n relationship between  AuthTable and DellTable
+type DetectorPlants @model(queries: null) {
+  id: ID!
+  detector: Detector @connection(name: "DetectorPlants")
+  plant: Plant @connection(name: "PlantDetectors")
+}
+
+#Temperature table
+type Temperature @model {
+  id: ID!
+  ref: String!
+  mobile: Mobile @connection
+  errs: [Err] @connection(name: "TemperatureErrs")
+  builds: [Build] @connection(name: "TemperatureBuilds")
+  detectors: [Detector] @connection(name: "TemperatureDetectors")
+}
+
+#Build table
+
+type Build @model {
+  id: ID!
+  ref: String!
+  mobile: Mobile @connection
+  temperature: Temperature @connection(name: "TemperatureBuilds")
+  detector: Detector @connection
+}
+
+# table Retro
+type Retro @model {
+  id: ID!
+  ref: String!
+  errs: [RetroErrs] @connection(name: "RetroErrs")
+  retrovalues: [RetroRetrovalues] @connection(name: "RetroRetrovalues")
+}
+
+# # m:n relationship between  Retro and Err
+type RetroErrs @model(queries: null) {
+  id: ID!
+  retro: Retro @connection(name: "RetroErrs")
+  err: Err @connection(name: "ErrRetros")
+}
+
+#table Retrovalue
+type Retrovalue @model {
+  id: ID!
+  ref: String!
+  retros: [RetroRetrovalues] @connection(name: "RetrovalueRetros")
+}
+
+# # m:n relationship between  Retro and Retrovalue
+type RetroRetrovalues @model(queries: null) {
+  id: ID!
+  retro: Retro @connection(name: "RetroRetrovalues")
+  retrovalue: Retrovalue @connection(name: "RetrovalueRetros")
+}
+
+#Part table
+type Part @model {
+  id: ID!
+  ref: String!
+  earns: [EarnParts] @connection(name: "PartEarns")
+}
+
+# # m:n relationship between  Earn and Part
+type EarnParts @model(queries: null) {
+  id: ID!
+  earn: Earn @connection(name: "EarnParts")
+  part: Part @connection(name: "PartEarns")
+}
+
+# Retire table
+type Retire @model {
+  id: ID!
+  ref: String!
+  mylib: Mylib @connection(name: "MylibRetires")
+}
+
+#Insect
+type Insect @model {
+  id: ID!
+  ref: String!
+  plants: [Plant] @connection(name: "InsectPlants")
+  errs: [Err] @connection(name: "InsectErrs")
+  secretdatas: [InsectSecretDatas] @connection(name: "InsectSecretDatas")
+  nonsecretdatas: [InsectNonSecretDatas]
+    @connection(name: "InsectNonSecretDatas")
+  mobiles: [Mobile] @connection(name: "InsectMobiles")
+}
+
+# # m:n relationship between  Insect and SecretData
+type InsectSecretDatas @model(queries: null) {
+  id: ID!
+  insect: Insect @connection(name: "InsectSecretDatas")
+  secretdata: SecretData @connection(name: "SecretDataInsects")
+}
+
+# # m:n relationship between  Insect and NonSecretData
+type InsectNonSecretDatas @model(queries: null) {
+  id: ID!
+  insect: Insect @connection(name: "InsectNonSecretDatas")
+  nonsecretdata: NonSecretData @connection(name: "NonSecretDataInsects")
+}
+
+#tyre table
+type Tyre @model {
+  id: ID!
+  ref: String!
+  plants: [Plant] @connection(name: "TyrePlants")
+}
+
+#Ingra table
+type Ingra @model {
+  id: ID!
+  ref: String!
+}
+
+# Pager table
+type Pager @model {
+  id: ID!
+  ref: String!
+  mobiles: [MobilePagers] @connection(name: "PagerMobiles")
+  secretdatas: [SecretDataPagers] @connection(name: "PagerSecretDatas")
+  nonsecretdatas: [NonSecretDataPagers] @connection(name: "PagerNonSecretDatas")
+  places: [PlaceTablePagers] @connection(name: "PagerPlaceTables")
+  errs: [Err] @connection(name: "PagerErrs")
+}
+
+# # m:n relationship between  Pager and Mobile
+type MobilePagers @model(queries: null) {
+  id: ID!
+  pager: Pager @connection(name: "PagerMobiles")
+  mobile: Mobile @connection(name: "MobilePagers")
+}
+
+# # # m:n relationship between  Pager and SecretData
+type SecretDataPagers @model(queries: null) {
+  id: ID!
+  pager: Pager @connection(name: "PagerSecretDatas")
+  secretdata: SecretData @connection(name: "SecretDataPagers")
+}
+
+# # # m:n relationship between  Pager and NonSecretData
+type NonSecretDataPagers @model(queries: null) {
+  id: ID!
+  pager: Pager @connection(name: "PagerNonSecretDatas")
+  nonsecretdata: NonSecretData @connection(name: "NonSecretDataPagers")
+}
+
+# # m:n relationship between  Pager and PlaceTable
+type PlaceTablePagers @model(queries: null) {
+  id: ID!
+  pager: Pager @connection(name: "PagerPlaceTables")
+  placetable: PlaceTable @connection(name: "PlaceTablePagers")
+}
+
+ 
