@@ -180,10 +180,10 @@ type Getthem @model {
     psirtCase: ID
     attachmentIDs: [String]
     # package: Package @connection(name: "Packagegetthem")
-    # incIDent: IncIDent @connection(name: "IncIDentgetthem")
+    incIDent: IncIDent @connection(name: "IncIDentgetthem")
     mobile: Mobile @connection(name: "mobilegetthem")
-    # model: model @connection(name: "modelgetthem")
-    # RemSLAs: [RemSLAgetthem] @connection(name: "GetthemRemSLAs")
+    model: model @connection(name: "modelgetthem")
+    RemSLAs: [RemSLAgetthem] @connection(name: "GetthemRemSLAs")
     dtable: [Getthemdtable] @connection(name: "Getthemdtable")
     standardknown: [Getthemstandardknown] @connection(name: "Getthemstandardknown")
 }
@@ -351,7 +351,7 @@ type model @model {
     modelUrl: String!
     isSystemGenerated: Boolean!
     mobile: Mobile @connection
-    # getthem: [Getthem] @connection(name: "modelgetthem")
+    getthem: [Getthem] @connection(name: "modelgetthem")
     architectures: [Architecture] @connection(name: "modelArchitectures")
     modelactors: [modelactor] @connection(name: "modelmodelactors")
 }
@@ -377,16 +377,16 @@ type RemSLA @model {
     ref: String!
     dueDate: AWSDate!
     isCustomizied: Boolean!
-    # getthem: [RemSLAgetthem] @connection(name: "RemSLAgetthem")
+    getthem: [RemSLAgetthem] @connection(name: "RemSLAgetthem")
     Remmeanvalues: [RemSLARemmeanvalues] @connection(name: "RemSLARemmeanvalues")
 }
 
-# # # m:n relationship between  RemSLA and Getthem
-# type RemSLAgetthem @model(queries: null) {
-#   ID: ID!
-#   RemSLA: RemSLA @connection(name: "RemSLAgetthem")
-#   Getthem: Getthem @connection(name: "GetthemRemSLAs")
-# }
+# # m:n relationship between  RemSLA and Getthem
+type RemSLAgetthem @model(queries: null) {
+  ID: ID!
+  RemSLA: RemSLA @connection(name: "RemSLAgetthem")
+  Getthem: Getthem @connection(name: "GetthemRemSLAs")
+}
 
 #table Remmeanvalue
 type Remmeanvalue @model {
@@ -488,7 +488,7 @@ type IncIDent @model {
     battlerythmset: Boolean!
     battlerythmduration: String!
     maintainers: [Maintainer] @connection(name: "IncIDentMaintainers")
-    # getthem: [Getthem] @connection(name: "IncIDentgetthem")
+    getthem: [Getthem] @connection(name: "IncIDentgetthem")
     dtable: [IncIDentdtable] @connection(name: "IncIDentdtable")
     standardknown: [IncIDentstandardknown] @connection(name: "IncIDentstandardknown")
     mobiles: [Mobile] @connection(name: "IncIDentmobiles")
